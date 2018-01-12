@@ -3,7 +3,7 @@ require("dotenv").config();
 var keys = require("./keys");
 var Twitter = require("twitter");
 var Spotify = require ("node-spotify-api");
-var omdb = require("request");
+var request = require("request");
 // API vars 
 var spotify = new Spotify(keys.spotify);
 var twitter = new Twitter(keys.twitter);
@@ -19,7 +19,7 @@ switch(command){
     break;
     case "spotify-this-song":spotifySearch();
     break;
-    case "movie-this":movieThis();
+    case "movie-this":movieSearch();
     break;
     case "do-what-it-says":doIt();
 
@@ -62,4 +62,31 @@ function spotifySearch(song) {
         }
       });
 }
+function movieSearch(movie) {
+    var movie = process.argv[3];
+    if(!movie){
+        movie = "Interception";
+    }
+    params = movie;
 
+    request('http://www.omdbapi.com/?apikey=trilogy&t=' + params + '&y=&plot=short&r=json&tomatoes=true', function (error, response, body) {
+        var movieObj = JSON.parse(body);
+
+        var movieInfo = 
+        "Title: " + movieObj.Title + "\r\n" +
+        "Release Year: " + movieObj.Year + "\r\n" +
+        "ESRB Rating: " + movieObj.Rated + "\r\n" +
+        "IMDB Rating: " + movieObj.Ratings[0].Value + "\r\n" +
+        "Rotten Tomato : " + movieObj.Ratings[1].Value + "\r\n" +
+        "Metacritic : " + movieObj.Ratings[2].Value + "\r\n" +
+        "Country Produced : " + movieObj.Country + "\r\n" +
+        "Language : " + movieObj.Language + "\r\n" +
+        "Awards : " + movieObj.Awards + "\r\n" +
+        "Plot: " + movieObj.Plot + "\r\n" +
+        "Actors : " + movieObj.Actors + "\r\n" 
+        // console.log(movieObj);
+        console.log(movieInfo);
+      });
+  
+
+}
