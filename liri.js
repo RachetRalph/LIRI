@@ -43,7 +43,7 @@ function spotifySearch(song) {
 
     spotify.search({ type: 'track', query: params + '&limit=1&' }, function(err, data) {
         if (err) {
-          return console.log('Error occurred: ' + err);
+          return console.log('Thats not a song:( ' + err);
         }
 
       var songIfy = data.tracks.items;
@@ -51,17 +51,28 @@ function spotifySearch(song) {
 
         for (var i=0; i < songIfy.length; i++){
             var songInfo = 
+                "===================================================" + "\r\n" +
                 "Song: " + songIfy[i].name + "\r\n" +
                 "Artist: " + songIfy[i].artists[0].name + "\r\n" +
                 "Album: " + songIfy[i].album.name + "\r\n" +
                 "Popularity: " + songIfy[i].popularity + "\r\n" +
-                "Preview: " + songIfy[i].preview_url
+                "Preview: " + songIfy[i].preview_url + "\n" +
+                "===================================================" + "\n" +
+                ""
+            
+        
                 
+                // fs.appendFile('log.txt', 'data to append', function (err) {
+                //     if (err) throw err;
+                //     console.log('"Yay! Added track to the log file!');
+                //   });
                 
             console.log(songInfo);
+            log(songInfo);
         }
       });
 }
+// OMDB search function that finds movie infomation 
 function movieSearch(movie) {
     var movie = process.argv[3];
     if(!movie){
@@ -73,20 +84,34 @@ function movieSearch(movie) {
         var movieObj = JSON.parse(body);
 
         var movieInfo = 
+        "===================================================" + "\r\n" + 
         "Title: " + movieObj.Title + "\r\n" +
         "Release Year: " + movieObj.Year + "\r\n" +
-        "ESRB Rating: " + movieObj.Rated + "\r\n" +
+        "ESRB Rating: " + movieObj.Rated + "\r\n" + 
         "IMDB Rating: " + movieObj.Ratings[0].Value + "\r\n" +
-        "Rotten Tomato : " + movieObj.Ratings[1].Value + "\r\n" +
-        "Metacritic : " + movieObj.Ratings[2].Value + "\r\n" +
+        // "Rotten Tomato : " + movieObj.Ratings[1].Value + "\r\n" +
+        "Metacritic : " + movieObj.Ratings.Value + "\r\n" +
         "Country Produced : " + movieObj.Country + "\r\n" +
         "Language : " + movieObj.Language + "\r\n" +
         "Awards : " + movieObj.Awards + "\r\n" +
         "Plot: " + movieObj.Plot + "\r\n" +
-        "Actors : " + movieObj.Actors + "\r\n" 
-        // console.log(movieObj);
-        console.log(movieInfo);
+        "Actors : " + movieObj.Actors + "\r\n" +
+        "==================================================="
+        //  console.log(movieInfo);
+        if (movieInfo === undefined ) {
+            console.log("N/A");
+        } else {
+            console.log(movieInfo);
+        };
+        
+       log(movieInfo);
       });
   
-
+    
 }
+// Log function that appends log file everytime a serach is conducted using LIRI
+function log (textLog) {
+    fs.appendFile('log.txt', textLog, function (err,) {
+        if (err) throw err;
+      });
+  }
