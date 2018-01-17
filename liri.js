@@ -125,6 +125,7 @@ function myTweets(tweety) {
     var tweet = process.argv[2];
 
     var params = {
+        // Follow me on twitter @rachetralph88
         screen_name: 'rachetralph88'
     };
 
