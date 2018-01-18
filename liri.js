@@ -149,4 +149,18 @@ function myTweets(tweety) {
                 }
             });
 
-    }
+            function takeCommand(){
+                fs.readFile('random.txt', "utf8", function(error, data){
+                  var txt = data.split(',');
+              
+                  spotifySearch(txt[1]);
+                });
+              }
+    
+    
+    
+    
+    
+    
+        }
+
